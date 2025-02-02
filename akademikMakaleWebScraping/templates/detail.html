@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+{% block title %}Makale Detay{% endblock %}
+
+{% block content %}
+{% if makale_data_JSON %}
+<div class="card mb-4 shadow-sm">
+  <div class="card-header bg-secondary text-white">
+    <strong>Makale Detayları</strong>
+  </div>
+  <div class="card-body">
+    <h3 class="card-title">{{ makale_data_JSON.get("makale_isim") }}</h3>
+    <hr class="mb-4" />
+
+    <div class="row">
+      <div class="col-md-6">
+        <p><strong>ID:</strong> {{ makale_data_JSON.get("makale_ID") }}</p>
+        <p>
+          <strong>Site URL:</strong>
+          <a
+            href="{{ makale_data_JSON.get('makale_site_URL') }}"
+            target="_blank"
+          >
+            {{ makale_data_JSON.get('makale_site_URL') }}
+          </a>
+        </p>
+        <p>
+          <strong>PDF URL:</strong>
+          {{ makale_data_JSON.get("PDF_URL") }}
+        </p>
+        <p>
+          <strong>Yazar:</strong>
+          {{ makale_data_JSON.get("makale_yazar") }}
+        </p>
+        <p>
+          <strong>Tür:</strong>
+          {{ makale_data_JSON.get("makale_tur") }}
+        </p>
+      </div>
+
+      <div class="col-md-6">
+        <p>
+          <strong>Yayımlanma Tarihi:</strong>
+          {% if makale_data_JSON.get("makale_tarih") %}
+            {{ makale_data_JSON.get("makale_tarih") }}
+          {% else %}
+            -
+          {% endif %}
+        </p>
+        <p>
+          <strong>Özet:</strong>
+          {{ makale_data_JSON.get("makale_ozet") }}
+        </p>
+        <p>
+          <strong>Anahtar Kelimeler (Makale):</strong>
+          {{ makale_data_JSON.get("makale_anahtarkelimeler") }}
+        </p>
+        <p>
+          <strong>Anahtar Kelimeler (Tarayıcı):</strong>
+          {{ makale_data_JSON.get("makale_anahtarkelimeler_tarayici") }}
+        </p>
+        <p>
+          <strong>Yayıncı Adı:</strong>
+          {{ makale_data_JSON.get("makale_yayinciadi") }}
+        </p>
+        <p>
+          <strong>Alıntı Sayısı:</strong>
+          {{ makale_data_JSON.get("makale_alintisayisi") }}
+        </p>
+        <p>
+          <strong>DOI:</strong>
+          {{ makale_data_JSON.get("makale_doi") }}
+        </p>
+      </div>
+    </div>
+
+    <hr />
+    <h5>Referanslar</h5>
+    {% if makale_data_JSON.get("makale_referanslar") %}
+      <ul class="list-group mb-3">
+        {% for ref in makale_data_JSON.get("makale_referanslar") %}
+        <li class="list-group-item">
+          {{ ref }}
+        </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p class="text-muted">Referans bulunamadı.</p>
+    {% endif %}
+
+    <a
+      href="{{ url_for('indir_pdf', makale_id=makale_data_JSON.get('makale_ID')) }}"
+      class="btn btn-primary btn-sm me-2"
+    >
+      <i class="bi bi-file-earmark-arrow-down"></i> PDF İndir
+    </a>
+    <a href="{{ url_for('index') }}" class="btn btn-outline-secondary btn-sm">
+      Geri
+    </a>
+  </div>
+</div>
+{% else %}
+<p>Makale bulunamadı.</p>
+{% endif %}
+{% endblock %}
